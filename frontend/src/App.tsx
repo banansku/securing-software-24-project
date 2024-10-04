@@ -1,16 +1,23 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './Contexts/AuthContext'
+import PrivateRoute from './privateRoute'
+import LoginPage from './loginPage'
+import HomePage from './homePage'
+import SignUpPage from './signUp'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/homepage" element={<HomePage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </>
   )
 }
