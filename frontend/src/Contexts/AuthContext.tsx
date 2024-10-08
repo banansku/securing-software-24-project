@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 import { User } from '../Interfaces/user';
 import axios, { AxiosResponse } from 'axios';
-
-const url = "http://localhost:3000"
+import { url } from '../App';
 
 interface AuthContextProps {
     isAuthenticated: boolean;
     loginUser: (username: string, password: string) => void;
     logoutUser: () => void;
-    userInfo: () => User |undefined;
+    userInfo: User | undefined;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -17,13 +16,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState<User | undefined>()
     const loginUser = (username: string, password: string) => {
-        const data =  {username: username, password: password}
+        const data = { username: username, password: password }
 
-        axios.post(`${url}/login`, data).then((resp: AxiosResponse)=> {
-            const user = resp.data.user
-            setUserInfo(user)
+        axios.post(`${url}/login`, data).then((resp: AxiosResponse) => {
+            setUserInfo(resp.data)
             setIsAuthenticated(true);
-        }).catch(e => console.log(e)) 
+        }).catch(e => console.log(e))
     };
 
     const logoutUser = () => {

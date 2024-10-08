@@ -2,9 +2,7 @@ import { useState } from "react"
 import { useAuth } from "./Contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-
-const url = "http://localhost:3000"
-
+import { url } from "./App";
 
 function SignUpPage() {
     const { loginUser, isAuthenticated } = useAuth();

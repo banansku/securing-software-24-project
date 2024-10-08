@@ -5,6 +5,8 @@ import LoginPage from './loginPage'
 import HomePage from './homePage'
 import SignUpPage from './signUp'
 
+export const url = "http://localhost:3000"
+
 function App() {
   return (
     <>
