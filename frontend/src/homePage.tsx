@@ -9,6 +9,8 @@ function LoginPage() {
 
 	const [count, setCount] = useState(0)
 
+	const [otherUser, setOtherUser] = useState<any>()
+
 	useEffect(() => {
 		if (userInfo) {
 			console.log(userInfo)
@@ -25,8 +27,13 @@ function LoginPage() {
 		axios.post(`${url}/clicks/${userInfo?.id}`).then(() => setCount(count + 1))
 	}
 
-	const searchPlayer = () => {
-		console.log(searchTerm)
+	const searchPlayer = async () => {
+		const params = {
+			username: searchTerm
+		}
+		const player = await axios.get(`${url}/user`, { params })
+		setOtherUser(player.data)
+		console.log(player)
 	}
 
 	const searchTermOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +54,7 @@ function LoginPage() {
 					<div>Find another players count:</div>
 					<input type="string" onChange={searchTermOnChange} /> <button onClick={searchPlayer}>search</button>
 				</div>
+				{otherUser && <div>{JSON.stringify(otherUser)}</div>}
 				<br />
 				<div className="row">
 					<button onClick={logoutUser}>Log Out</button>

@@ -15,17 +15,23 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState<User | undefined>()
+
+    //const [token, setToken] = useState(null);
+
     const loginUser = (username: string, password: string) => {
         const data = { username: username, password: password }
 
         axios.post(`${url}/login`, data).then((resp: AxiosResponse) => {
+            //const {userData, token} = resp.data
             setUserInfo(resp.data)
             setIsAuthenticated(true);
+            //setToken(token);
         }).catch(e => console.log(e))
     };
 
     const logoutUser = () => {
         // Perform logout logic
+        //setToken(undefined)
         setIsAuthenticated(false);
     };
 

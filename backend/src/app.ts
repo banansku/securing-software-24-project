@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { sequelize, Click, User } from './db';
+import { Op } from 'sequelize';
 
 const app: Application = express();
 const PORT: number = 3000;
@@ -148,10 +149,38 @@ app.post('/clicks/:userId', async (req, res) => {
   }
 });
 
-app.get('/users', async (req, res) => {
+/**
+ * The developer should really consider sleeping a bit more, because this kind of SQL looks awful
+ * 
+ * A1:2017-Injection -> Unescaped queries are vulnerable to SQL injection, 
+ * where attackers can manipulate the input to execute arbitrary SQL commands,
+ * compromising the security of the database.
+ * 
+ * Structured queries with proper parameterization help prevent SQL injection by safely handling user input, 
+ * ensuring that the database only executes intended commands
+ */
+
+//Find the the user with username
+app.get('/user', async (req, res) => {
+  const { username } = req.query
+  console.log(username, "SSDADASDAS")
   try {
-    const users = await User.findAll();
-    res.status(200).json(users);
+    //await User.findOne( {
+    //  where: {
+    //    'username::text': {
+    //      [Op.like]: username
+    //    }
+    //  }
+    //})
+    const userQueryResult: any = await sequelize.query(`SELECT * FROM users WHERE username LIKE '%${username}%'`)
+    if (userQueryResult[0][0].id && userQueryResult[0][0].username) {
+      const { id, username } = userQueryResult[0][0]
+      const userScore = await Click.findOne({ where: { id } })
+
+      res.status(200).json({ username: username, clicks: userScore?.dataValues.clickValue });
+    } else {
+      throw ("No user found")
+    }
   } catch (error) {
     res.status(500).json({ error: 'Error fetching users' });
   }
