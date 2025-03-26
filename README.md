@@ -34,3 +34,5 @@ npm run dev
 ```
 
 to start the application in development mode. Do mind that due to how ``dockerman`` is set up, it wipes the ``database.sqlite`` on every refresh.
+
+Service running at: https://securing-software-24-project.onrender.com/
