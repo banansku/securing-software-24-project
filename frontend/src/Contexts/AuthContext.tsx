@@ -16,7 +16,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState<User | undefined>()
 
-    //const [token, setToken] = useState(null);
+    //const [token, setToken] = useState(null); testtest
 
     const loginUser = (username: string, password: string) => {
         const data = { username: username, password: password }
